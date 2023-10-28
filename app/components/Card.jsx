@@ -1,8 +1,11 @@
-
 'use client'
-const Card = ({ title, description, valueLocked }) => {
+import { useStateProvider } from "@/context";
+
+const Card = ({ id ,title, description, valueLocked }) => {
+  const {confirmPayment}=useStateProvider();
   const handleApprove=()=>{
     console.log("The payment is processed");
+    confirmPayment(id);
   }
   return (
     <div className="w-64 h-64 bg-gradient-to-b bg-[#1D2D49] cursor-pointer text-white rounded-lg  shadow-lg hover:scale-105 transition-transform">

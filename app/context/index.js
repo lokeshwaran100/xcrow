@@ -1,19 +1,37 @@
 'use client'
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {  ABI } from "@/constants";
 import Web3 from 'web3';
 import {ethers} from 'ethers';
 import { useWalletContext } from "./Web3ModalProvider";
+import axios from "axios";
 
 const StateContext=createContext();
 
 export const StateContextProvider=({children})=>{
+    // url of the website
+    const url=process.env.NEXT_PUBLIC_URL;
+    console.log("url",url);
      // fetching the address and abi from the smart contracts
     // const CONTRACT_ADDRESS="xdc2DdF6241e37f261f45520eA03E2D2cF360B9012E";
     const CONTRACT_ADDRESS="0xa6369e425a78048385816caEa27DB99350e52528";
     const CONTRACT_ABI=ABI;
 
-
+    const [escrowData,setEscrowData]=useState([]);
+    // to fetch all the escrows
+    const fetchData=async()=>{
+        try{
+            const data=await axios.get(`${url}api/allEscrows`);
+            setEscrowData(data.data.message);
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+    }
+    useEffect(()=>{
+        fetchData();
+    },[url]);
 
     // const testnetProvider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_APOTHEM_NETWORK_URL)
     // const wallet = new ethers.Wallet(process.env.NEXT_PUBLIC_APOTHEM_PRIVATE_KEY, testnetProvider)
@@ -42,13 +60,6 @@ export const StateContextProvider=({children})=>{
         if(connected)
         {
             try{
-                // const contract = new ethers.Contract(
-                //     CONTRACT_ADDRESS,
-                //     CONTRACT_ABI,
-                //     walletSigner
-                // );
-                // const receipt = await contract.createEscrow(form.amount,1000);
-                // console.log(receipt);
                 console.log("window.etherium",window.ethereum);
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
@@ -58,7 +69,8 @@ export const StateContextProvider=({children})=>{
                 );
                 console.log("Here");
                 const tx = await contractInstance.createEscrow(form.amount,1000);
-                console.log(tx);
+                const res=await axios.post(`${url}api/create`, {...form,client:"none",status:"pending",tokenId:"10"});
+                console.log(res);
             }
             catch(e)
             {
@@ -71,13 +83,53 @@ export const StateContextProvider=({children})=>{
 
     }
 
-    const lockFunds=async()=>{
+    const lockFunds=async(Escrow)=>{
         // a function to lock funds in the escrow
-        console.log("fund locking initiated");
+        console.log("fund locking initiated",Escrow);
         if(connected)
         {
             try{
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                const contractInstance = new ethers.Contract (
+                  CONTRACT_ADDRESS, CONTRACT_ABI, signer
+                );
+                const confirmPaymentTx = await contractInstance.confirmPayment(Escrow.tokenId, {
+                    value: ethers.utils.parseUnits(Escrow.amount.toString(), /* decimals */ 18), 
+                    gasLimit: 300000 
+                  });
+                console.log(confirmPaymentTx);
+                const res=await axios.post(`${url}api/addClient`, {tokenId:Escrow.tokenId,account:account});
+                console.log(res);
+            }
+            catch(e)
+            {
+                console.log(e);
+            }
+        }
+        else{
+            console.log("wallet is not connected");
+        }
+    }
 
+    const confirmPayment=async (id)=>{
+        console.log("funds are release initated",id);
+        // a function to confirm the payment
+        if(connected)
+        {
+            try{
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                const contractInstance = new ethers.Contract (
+                  CONTRACT_ADDRESS, CONTRACT_ABI, signer
+                );
+                const tx=contractInstance.confirmDelivery(id,{
+                    gasLimit: 300000 
+                });
+                const res=await axios.post(`${url}api/approve`, {tokenId:id});
+                console.log(res);
             }
             catch(e)
             {
@@ -89,7 +141,7 @@ export const StateContextProvider=({children})=>{
         }
     }
     return (
-        <StateContext.Provider value={{mintNft,lockFunds}}>
+        <StateContext.Provider value={{mintNft,lockFunds,confirmPayment,escrowData,connected}}>
         {children}
         </StateContext.Provider>
     )

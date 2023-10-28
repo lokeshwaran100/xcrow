@@ -1,18 +1,26 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation';
 import { SAMPLE_DATE } from '@/constants'
 import { useStateProvider } from '@/context';
+import { useWalletContext } from '@/context/Web3ModalProvider';
 
 const page = () => {
     const {name,id}=useParams();
-    const {lockFunds}=useStateProvider();
+    const {lockFunds,connected}=useStateProvider();
+    const {connect}=useWalletContext();
     const [data,setData]=useState(SAMPLE_DATE.filter((data)=>{
         return data.id===id
     }));
+
+    // a function to connect the walletconnect
+    const handleConnect = useCallback(() => {
+        connect();
+      }, [connect]);
+
     // a function to lock funds
     const handlePay=()=>{
-        lockFunds
+        lockFunds(data[0]);
     }
     console.log("data",data);
   return (
@@ -51,12 +59,16 @@ const page = () => {
           </div>
         </div>
           <div className='flex justify-center pt-2'>
-          <button
+          {
+            !connected?<button className='bg-[#11E0D1]  text-white text-lg py-2 px-4 rounded hover:opacity-90' onClick={handleConnect}>
+                Connect
+            </button>:<button
             className="bg-[#11E0D1]  text-white text-lg py-2 px-4 rounded hover:opacity-90"
             onClick={handlePay}
           >
             Pay
           </button>
+          }
           </div>
       </div>
     </div>
