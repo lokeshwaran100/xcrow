@@ -52,7 +52,10 @@ contract EscrowNFT is ERC721Enumerable, Ownable {
     // function supportsInterface(bytes4 _interfaceId) public view virtual override(ERC721, ERC721Enumerable) returns (bool) { }
 }
 
+
 contract Escrow is Ownable {
+
+    uint256 GWEI_IN_XDC = 1000000000000000000;
 
     EscrowNFT public escrowNFT;
     bool public initialized = false;
@@ -94,7 +97,7 @@ contract Escrow is Ownable {
     function confirmPayment(uint256 _tokenId) external payable isInitialized {
 		(uint256 amount, uint256 matureTime) = escrowNFT.tokenDetails(_tokenId);
         
-		require(msg.value >= amount, "Escrow correct amount XDC");
+		require(msg.value/GWEI_IN_XDC >= amount, "Escrow correct amount XDC");
 
 		// (bool success, ) = address(this).call{value: amount}("");
 		
@@ -112,11 +115,13 @@ contract Escrow is Ownable {
 		
 		(uint256 amount, ) = escrowNFT.tokenDetails(_tokenId);
 
-		(bool success, ) = seller[_tokenId].call{value: amount}("");
+		(bool success, ) = seller[_tokenId].call{value: amount * GWEI_IN_XDC}("");
 		
         require(success, "Failed transfer fund to seller");
         
         escrowNFT.transferFrom(address(this), msg.sender, _tokenId);
+
+        //payable(owner()).transfer(amount * 0.1 / 100);
         
         buyer[_tokenId] = address(0);
         seller[_tokenId] = address(0);
