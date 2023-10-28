@@ -1,0 +1,25 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "clipboard-copy": "^4.0.1",
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "web3": "^4.2.1",
+    "web3modal": "^1.9.12",
+    "xdcpay-connect": "^1.0.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10",
+    "postcss": "^8",
+    "tailwindcss": "^3"
+  }
+}
