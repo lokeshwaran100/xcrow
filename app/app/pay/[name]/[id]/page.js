@@ -5,12 +5,14 @@ import { SAMPLE_DATE } from '@/constants'
 import { useStateProvider } from '@/context';
 import { useWalletContext } from '@/context/Web3ModalProvider';
 import Loader from '@/components/Loader';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
     const {name,id}=useParams();
     const {lockFunds,connected,isLoading,escrowData}=useStateProvider();
     const {connect}=useWalletContext();
     const [data,setData]=useState(null);
+    const router=useRouter();
 
     useEffect(()=>{
       if(escrowData&&escrowData.length>0)
@@ -29,8 +31,9 @@ const page = () => {
       }, [connect]);
 
     // a function to lock funds
-    const handlePay=()=>{
-        lockFunds(data[0]);
+    const handlePay=async()=>{
+        await lockFunds(data[0]);
+        router.push("/")
     }
     console.log("data",data);
 
