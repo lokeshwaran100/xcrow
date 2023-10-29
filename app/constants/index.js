@@ -7,11 +7,6 @@ export const NAV_ICONS=[
         link:"/"
     },
     {
-        label:"Service",
-        image:service,
-        link:"/service"
-    },
-    {
         label:"Finished",
         image:finished,
         link:"/finished"
