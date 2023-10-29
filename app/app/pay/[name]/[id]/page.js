@@ -4,14 +4,24 @@ import { useParams } from 'next/navigation';
 import { SAMPLE_DATE } from '@/constants'
 import { useStateProvider } from '@/context';
 import { useWalletContext } from '@/context/Web3ModalProvider';
+import Loader from '@/components/Loader';
 
 const page = () => {
     const {name,id}=useParams();
-    const {lockFunds,connected}=useStateProvider();
+    const {lockFunds,connected,isLoading,escrowData}=useStateProvider();
     const {connect}=useWalletContext();
-    const [data,setData]=useState(SAMPLE_DATE.filter((data)=>{
-        return data.id===id
-    }));
+    const [data,setData]=useState(null);
+
+    useEffect(()=>{
+      if(escrowData&&escrowData.length>0)
+      {
+        setData(escrowData.filter((escrow)=>(escrow.tokenId===id.toString())));
+        console.log("from the escrow data",data);
+      }
+      else{
+        console.log("escrow data is empty");
+      }
+    },[escrowData])
 
     // a function to connect the walletconnect
     const handleConnect = useCallback(() => {
@@ -23,6 +33,11 @@ const page = () => {
         lockFunds(data[0]);
     }
     console.log("data",data);
+
+    if(data===null||data.length===0)
+    {
+      return <Loader/>
+    }
   return (
     <div className='fixed inset-0 flex justify-center  items-center backdrop-blur-sm '>
     <div className="bg-[#131F35] rounded flex justify-center items-center">
@@ -37,7 +52,7 @@ const page = () => {
             </label>
             <p
               className="w-[300px] p-2 h-32 bg-[#324567] outline-none rounded break-words"
-            >{data[0].Description.slice(0,100)}...</p>
+            >{data[0].description.slice(0,100)}...</p>
           </div>
           <div className='lg:flex gap-6 justify-between '>
         <div className="mb-4 flex items-center justify-center gap-2">
@@ -46,7 +61,7 @@ const page = () => {
             </label>
             <p
               className="w-full text-center outline-none  font-semibold rounded"
-            >{data[0].id}</p>
+            >{data[0].tokenId}</p>
           </div>
 
           <div className="mb-4 flex items-center gap-2">

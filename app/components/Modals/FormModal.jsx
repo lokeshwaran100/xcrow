@@ -3,10 +3,11 @@ import { back,copy as copyIcon,copyTick } from '@/assets';
 import Image from 'next/image';
 import copy from 'clipboard-copy';
 import { useStateProvider } from '@/context';
+import Loader from '../Loader';
 
 const FormModal = ({setFormModal}) => {
     // using state provider 
-    const {mintNft}=useStateProvider();
+    const {mintNft,isLoading}=useStateProvider();
     // to store the form data
     const [formData,setForm]=useState({name:'',amount:'',description:''});
     const handleChange=(e)=>{
@@ -21,9 +22,10 @@ const FormModal = ({setFormModal}) => {
     }
     // a function to handle submit 
     const [hasMint,setHasMint]=useState(false);
-    const handleSubmit=(e)=>{
+    const [tokenId,setTokenId]=useState(null);
+    const handleSubmit=async (e)=>{
         e.preventDefault();
-        mintNft(formData);
+        setTokenId(await mintNft(formData));
         setHasMint(true);
     }
 
@@ -33,20 +35,27 @@ const FormModal = ({setFormModal}) => {
         console.log("You are in copy");
         // a function to generate a random url
         const generateRandomURL = () => {
-            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const urlLength = 10; // You can adjust the URL length as needed.
+            // const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            // const urlLength = 10; // You can adjust the URL length as needed.
             
-            let randomURL = process.env.NEXT_PUBLIC_URL;
-            randomURL+=encodeURIComponent(formData.name).toLowerCase().replace(/%20/g, '-')+"/"
+            let randomURL = process.env.NEXT_PUBLIC_URL+"pay/";
+            randomURL+=encodeURIComponent(formData.name).toLowerCase().replace(/%20/g, '-')+"/";
+            randomURL+=tokenId;
         
-            for (let i = 0; i < urlLength; i++) {
-              const randomIndex = Math.floor(Math.random() * characters.length);
-              randomURL += characters.charAt(randomIndex);
-            }
+            // for (let i = 0; i < urlLength; i++) {
+            //   const randomIndex = Math.floor(Math.random() * characters.length);
+            //   randomURL += characters.charAt(randomIndex);
+            // }
             return randomURL;
           };
         copy(generateRandomURL());
         setCopied(true);
+    }
+
+    // to show the loading state
+    if(isLoading)
+    {
+      return <Loader/>
     }
   return (
     <div className='fixed inset-0 flex justify-center  items-center backdrop-blur-sm '>
@@ -116,7 +125,7 @@ const FormModal = ({setFormModal}) => {
           <button
             className="bg-[#11E0D1]  text-white text-lg py-2 px-4 rounded hover:opacity-90"
           >
-            Mint
+            CreateEscrow
           </button>
           }
           </div>

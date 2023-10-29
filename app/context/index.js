@@ -20,6 +20,7 @@ export const StateContextProvider=({children})=>{
     const [escrowData,setEscrowData]=useState([]);
     // to fetch all the escrows
     const fetchData=async()=>{
+        setIsLoading(true);
         try{
             const data=await axios.get(`${url}api/allEscrows`);
             setEscrowData(data.data.message);
@@ -28,6 +29,7 @@ export const StateContextProvider=({children})=>{
         {
             console.log(e);
         }
+        setIsLoading(false);
     }
     useEffect(()=>{
         fetchData();
@@ -49,6 +51,9 @@ export const StateContextProvider=({children})=>{
     //     CONTRACT_ABI,CONTRACT_ADDRESS
     // );
 
+    //  to handle the loading
+    const [isLoading,setIsLoading]=useState(false);
+
     // fetching information form the wallet
     const {connected,account}=useWalletContext() 
 
@@ -60,6 +65,8 @@ export const StateContextProvider=({children})=>{
         if(connected)
         {
             try{
+                
+                setIsLoading(true);
                 console.log("window.etherium",window.ethereum);
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
@@ -68,9 +75,16 @@ export const StateContextProvider=({children})=>{
                   CONTRACT_ADDRESS, CONTRACT_ABI, signer
                 );
                 console.log("Here");
-                const tx = await contractInstance.createEscrow(form.amount,1000);
-                const res=await axios.post(`${url}api/create`, {...form,client:"none",status:"pending",tokenId:"10"});
-                console.log(res);
+                const value = await contractInstance.callStatic.createEscrow(form.amount,1000); // 0.5 XDC Number
+                console.log("here 2",value.toString());
+                const tx=await contractInstance.createEscrow(form.amount,1000);
+                console.log("transaction",tx);
+                // const value=await tx.wait();
+                // console.log("transaction",value.events);
+                const res=await axios.post(`${url}api/create`, {...form,client:"none",status:"pending",tokenId:value.toString()});
+                console.log(res);  
+                setIsLoading(false);
+                return value.toString();
             }
             catch(e)
             {
@@ -80,12 +94,12 @@ export const StateContextProvider=({children})=>{
         else{
             console.log("The wallet is not connected");
         }
-
     }
 
     const lockFunds=async(Escrow)=>{
         // a function to lock funds in the escrow
         console.log("fund locking initiated",Escrow);
+        setIsLoading(true);
         if(connected)
         {
             try{
@@ -96,7 +110,7 @@ export const StateContextProvider=({children})=>{
                   CONTRACT_ADDRESS, CONTRACT_ABI, signer
                 );
                 const confirmPaymentTx = await contractInstance.confirmPayment(Escrow.tokenId, {
-                    value: ethers.utils.parseUnits(Escrow.amount.toString(), /* decimals */ 18), 
+                    value: ethers.utils.parseUnits(Escrow.amount.toString(), /* decimals */ 18), // 1 XDC 
                     gasLimit: 300000 
                   });
                 console.log(confirmPaymentTx);
@@ -111,10 +125,12 @@ export const StateContextProvider=({children})=>{
         else{
             console.log("wallet is not connected");
         }
+        setIsLoading(false)
     }
 
     const confirmPayment=async (id)=>{
         console.log("funds are release initated",id);
+        setIsLoading(true);
         // a function to confirm the payment
         if(connected)
         {
@@ -139,9 +155,10 @@ export const StateContextProvider=({children})=>{
         else{
             console.log("wallet is not connected");
         }
+        setIsLoading(false);
     }
     return (
-        <StateContext.Provider value={{mintNft,lockFunds,confirmPayment,escrowData,connected}}>
+        <StateContext.Provider value={{mintNft,lockFunds,confirmPayment,escrowData,connected,isLoading}}>
         {children}
         </StateContext.Provider>
     )

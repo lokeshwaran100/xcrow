@@ -9,10 +9,11 @@ const DisplayCards = ({data}) => {
         data.map((data)=>{
             return <Card
                 key={data.name}
-                id={data.id}
+                id={data.tokenId}
                 title={data.name}
-                description={data.Description}
+                description={data.description}
                 valueLocked={data.amount}
+                status={data.status}
             />
         })
     }
