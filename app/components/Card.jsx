@@ -7,6 +7,10 @@ const Card = ({ id ,title, description, valueLocked, status }) => {
     console.log("The payment is processed");
     confirmPayment(id);
   }
+  // the call is already approved
+  const handleSuccess=()=>{
+    console.log("The escrow is successfully executed");
+  }
   return (
     <div className="w-64 h-64 bg-gradient-to-b bg-[#1D2D49] cursor-pointer text-white rounded-lg  shadow-lg hover:scale-105 transition-transform">
       <div className="p-4">
@@ -18,7 +22,7 @@ const Card = ({ id ,title, description, valueLocked, status }) => {
           <p className="text-white">Value Locked:</p>
           <p className="text-lg font-semibold ">{valueLocked} XDC</p>
         </div>
-        <button onClick={handleApprove} className="bg-selected text-text  bg-[#11E0D1] hover:bg-[#3EECE0] transition-all hover:scale-105 duration-300  px-4 py-2 rounded-md">
+        <button onClick={(status==='approved')?handleSuccess:handleApprove} className="bg-selected text-text  bg-[#11E0D1] hover:bg-[#3EECE0] transition-all hover:scale-105 duration-300  px-4 py-2 rounded-md">
           {(status==='approved')?(status==="rejected")?'Rejected':'Success':'Approve'}
         </button>
       </div>
