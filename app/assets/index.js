@@ -7,6 +7,7 @@ import disconnect from "./disconnect.svg"
 import back from "./back.svg"
 import copyTick from "./copyTick.svg"
 import copy from "./copy.svg"
+import loader from "./loader.svg"
 
 export {
     service,
@@ -17,5 +18,6 @@ export {
     disconnect,
     back,
     copy,
-    copyTick
+    copyTick,
+    loader
 };

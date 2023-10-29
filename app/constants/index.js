@@ -7,11 +7,6 @@ export const NAV_ICONS=[
         link:"/"
     },
     {
-        label:"Service",
-        image:service,
-        link:"/service"
-    },
-    {
         label:"Finished",
         image:finished,
         link:"/finished"
@@ -25,33 +20,38 @@ export const NAV_ICONS=[
 
 export const SAMPLE_DATE=[
     {
+		"id":"1",
         "name":"Estate Agreement",
         "Description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo in libero blandit scelerisque. Nunc bibendum justo eu libero varius, eget feugiat purus elementum. Integer eget erat in justo convallis vulputate. Sed hendrerit, felis nec gravida varius, metus purus euismod purus, sit amet congue nunc quam eget justo. Vivamus a turpis eu elit fermentum suscipit. Cras id tincidunt velit. Aliquam tincidunt libero nec ex ultrices, vel facilisis quam aliquam. Fusce venenatis, sapien non cursus aliquet, nunc massa dictum turpis, a aliquam orci justo in lectus. Proin fringilla metus vitae justo dapibus, vel vehicula metus tincidunt. Vestibulum ultricies sem nec tellus aliquet, sit amet pellentesque quam elementum. Maecenas venenatis viverra efficitur. Nullam scelerisque, justo id vestibulum laoreet, purus tortor aliquam est, a bibendum dui ex sed quam",
-        "amount":"0.5",
+        "amount":0.5,
         "status":"in progress"
     },
     {
+		"id":"2",
         "name": "Rental Agreement",
         "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo in libero blandit scelerisque. Nunc bibendum justo eu libero varius, eget feugiat purus elementum. Integer eget erat in justo convallis vulputate. Sed hendrerit, felis nec gravida varius, metus purus euismod purus, sit amet congue nunc quam eget justo. Vivamus a turpis eu elit fermentum suscipit. Cras id tincidunt velit. Aliquam tincidunt libero nec ex ultrices, vel facilisis quam aliquam. Fusce venenatis, sapien non cursus aliquet, nunc massa dictum turpis, a aliquam orci justo in lectus. Proin fringilla metus vitae justo dapibus, vel vehicula metus tincidunt. Vestibulum ultricies sem nec tellus aliquet, sit amet pellentesque quam elementum. Maecenas venenatis viverra efficitur. Nullam scelerisque, justo id vestibulum laoreet, purus tortor aliquam est, a bibendum dui ex sed quam",
-        "amount": "0.6",
+        "amount": 0.6,
         "status":"in progress"
     },
     {
+		"id":"3",
         "name": "Rental Agreement",
         "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo in libero blandit scelerisque. Nunc bibendum justo eu libero varius, eget feugiat purus elementum. Integer eget erat in justo convallis vulputate. Sed hendrerit, felis nec gravida varius, metus purus euismod purus, sit amet congue nunc quam eget justo. Vivamus a turpis eu elit fermentum suscipit. Cras id tincidunt velit. Aliquam tincidunt libero nec ex ultrices, vel facilisis quam aliquam. Fusce venenatis, sapien non cursus aliquet, nunc massa dictum turpis, a aliquam orci justo in lectus. Proin fringilla metus vitae justo dapibus, vel vehicula metus tincidunt. Vestibulum ultricies sem nec tellus aliquet, sit amet pellentesque quam elementum. Maecenas venenatis viverra efficitur. Nullam scelerisque, justo id vestibulum laoreet, purus tortor aliquam est, a bibendum dui ex sed quam",
-        "amount": "0.6",
+        "amount": 0.6,
         "status":"in progress"
     },
     {
+		"id":"4",
         "name": "Lease Agreement",
         "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo in libero blandit scelerisque. Nunc bibendum justo eu libero varius, eget feugiat purus elementum. Integer eget erat in justo convallis vulputate. Sed hendrerit, felis nec gravida varius, metus purus euismod purus, sit amet congue nunc quam eget justo. Vivamus a turpis eu elit fermentum suscipit. Cras id tincidunt velit. Aliquam tincidunt libero nec ex ultrices, vel facilisis quam aliquam. Fusce venenatis, sapien non cursus aliquet, nunc massa dictum turpis, a aliquam orci justo in lectus. Proin fringilla metus vitae justo dapibus, vel vehicula metus tincidunt. Vestibulum ultricies sem nec tellus aliquet, sit amet pellentesque quam elementum. Maecenas venenatis viverra efficitur. Nullam scelerisque, justo id vestibulum laoreet, purus tortor aliquam est, a bibendum dui ex sed quam",
-        "amount": "0.8",
+        "amount": 0.8,
         "status":"in progress"
     },
     {
+		"id":"5",
         "name": "Partnership Agreement",
         "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo in libero blandit scelerisque. Nunc bibendum justo eu libero varius, eget feugiat purus elementum. Integer eget erat in justo convallis vulputate. Sed hendrerit, felis nec gravida varius, metus purus euismod purus, sit amet congue nunc quam eget justo. Vivamus a turpis eu elit fermentum suscipit. Cras id tincidunt velit. Aliquam tincidunt libero nec ex ultrices, vel facilisis quam aliquam. Fusce venenatis, sapien non cursus aliquet, nunc massa dictum turpis, a aliquam orci justo in lectus. Proin fringilla metus vitae justo dapibus, vel vehicula metus tincidunt. Vestibulum ultricies sem nec tellus aliquet, sit amet pellentesque quam elementum. Maecenas venenatis viverra efficitur. Nullam scelerisque, justo id vestibulum laoreet, purus tortor aliquam est, a bibendum dui ex sed quam",
-        "amount": "1.0",
+        "amount": 1.0,
         "status":"in progress"
     }          
 ]
