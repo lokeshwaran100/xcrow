@@ -32,7 +32,7 @@ const Navbar = () => {
     <div className='bg-[#060E1F] flex justify-between items-center p-4 mx-4'>
         <div>
         <Link href="/">
-        <Image src={logo} alt="logo" width={40} height={40}/>
+        <Image src={logo} alt="logo" width={52} height={52}/>
         </Link>
         </div>
         {connected?<div className='flex justify-between items-center gap-4'>
