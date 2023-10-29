@@ -1,5 +1,5 @@
 # <img src="doc/xcrow-logo.png" width="23px" alt="ditty-logo"> Xcrow
-# Decentralized Escrow Application on XDC Network for Merchants and Customers
+Decentralized Escrow Application on XDC Network for Merchants and Customers
 
 ## Problem Statement
 In online transactions, trust issues between merchants and customers often lead to disputes and potential fraud. The lack of a reliable escrow service poses a significant challenge.
